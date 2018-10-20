@@ -26,13 +26,20 @@ func main() {
 		Draft:      false,
 	}
 
-	// tmpl, err := template.New("Foo").Parse("'{{ .Name }}'{{ if .Draft }} (Draft){{ end }} {{ .Byline }}")
-	tmpl, err := template.New("Foo").Parse("'{{ .Name }}'{{ if .Draft }} (Draft){{ else }} (Published){{ end }} {{ .Byline }}")
+	tmpl, err := template.New("Foo").Parse(`
+    {{ range .}}
+      <p>'{{ .Name }}' by {{ .AuthorName }}</p>
+    {{ else }}
+      <p>No published articles yet</p>
+    {{ end }}
+    `)
+
 	if err != nil {
 		panic(err)
 	}
 
-	err = tmpl.Execute(os.Stdout, goArticle)
+	// err = tmpl.Execute(os.Stdout, []Article{})
+	err = tmpl.Execute(os.Stdout, []Article{goArticle})
 
 	if err != nil {
 		panic(err)
