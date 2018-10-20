@@ -7,12 +7,17 @@ import (
 
 func main() {
 
-	tmpl, err := template.New("Foo").Parse("<h1>Hello {{.}}</h1>\n")
+	goArticle := map[string]string{
+		"Name":       "The Go html/template package",
+		"AuthorName": "Mal Curtis",
+	}
+
+	tmpl, err := template.New("Foo").Parse("'{{ .Name }}' by {{ .AuthorName }}")
 	if err != nil {
 		panic(err)
 	}
 
-	err = tmpl.Execute(os.Stdout, "World")
+	err = tmpl.Execute(os.Stdout, goArticle)
 
 	if err != nil {
 		panic(err)
