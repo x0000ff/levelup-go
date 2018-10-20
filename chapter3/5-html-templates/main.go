@@ -5,11 +5,17 @@ import (
 	"os"
 )
 
+// Article ...
+type Article struct {
+	Name       string
+	AuthorName string
+}
+
 func main() {
 
-	goArticle := map[string]string{
-		"Name":       "The Go html/template package",
-		"AuthorName": "Mal Curtis",
+	goArticle := Article{
+		Name:       "The Go html/template package",
+		AuthorName: "Mal Curtis",
 	}
 
 	tmpl, err := template.New("Foo").Parse("'{{ .Name }}' by {{ .AuthorName }}")
