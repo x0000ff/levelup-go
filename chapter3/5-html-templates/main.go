@@ -20,26 +20,39 @@ func (a Article) Byline() string {
 
 func main() {
 
-	goArticle := Article{
-		Name:       "The Go html/template package",
-		AuthorName: "Mal Curtis",
-		Draft:      false,
-	}
-
 	tmpl, err := template.New("Foo").Parse(`
-    {{ range .}}
+    {{ define "ArticleResource" }}
       <p>'{{ .Name }}' by {{ .AuthorName }}</p>
-    {{ else }}
-      <p>No published articles yet</p>
     {{ end }}
+
+    {{ define "ArticleLoop" }}
+      {{ range . }}
+        {{ template "ArticleResource" . }}
+      {{ else }}
+        <p>No published articles yet</p>
+      {{ end }}
+    {{ end }}
+
+    {{ template "ArticleLoop" . }}
     `)
 
+	articles := []Article{
+		Article{
+			Name:       "The Go html/template package",
+			AuthorName: "Mal Curtis",
+			Draft:      false,
+		},
+		Article{
+			Name:       "Code Complete",
+			AuthorName: "Steve McConnell",
+			Draft:      false,
+		},
+	}
 	if err != nil {
 		panic(err)
 	}
 
-	// err = tmpl.Execute(os.Stdout, []Article{})
-	err = tmpl.Execute(os.Stdout, []Article{goArticle})
+	err = tmpl.Execute(os.Stdout, articles)
 
 	if err != nil {
 		panic(err)
