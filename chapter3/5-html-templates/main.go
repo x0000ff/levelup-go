@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"os"
 )
@@ -11,6 +12,11 @@ type Article struct {
 	AuthorName string
 }
 
+// Byline ...
+func (a Article) Byline() string {
+	return fmt.Sprintf("written by %s", a.AuthorName)
+}
+
 func main() {
 
 	goArticle := Article{
@@ -18,7 +24,7 @@ func main() {
 		AuthorName: "Mal Curtis",
 	}
 
-	tmpl, err := template.New("Foo").Parse("'{{ .Name }}' by {{ .AuthorName }}")
+	tmpl, err := template.New("Foo").Parse("'{{ .Name }}' {{ .Byline }}")
 	if err != nil {
 		panic(err)
 	}
