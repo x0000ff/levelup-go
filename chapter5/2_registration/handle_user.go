@@ -7,7 +7,7 @@ import (
 )
 
 // HandleUserNew ...
-func HandleUserNew(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func HandleUserNew(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	// Display Home Page
-	http.Redirect(w, r, "/users/new", http.StatusFound)
+	RenderTemplate(w, r, "users/new", nil)
 }

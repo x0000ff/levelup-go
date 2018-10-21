@@ -12,6 +12,8 @@ func main() {
 	router := NewRouter()
 
 	router.Handle("GET", "/", HandleHome)
+	router.Handle("GET", "/register", HandleUserNew)
+
 	router.ServeFiles("/assets/*filepath", http.Dir("assets/"))
 
 	middleware := Middleware{}
