@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -8,18 +9,25 @@ import (
 
 func main() {
 
-	unauthenticatedRouter := NewRouter()
-	unauthenticatedRouter.GET("/", HandleHome)
+	router := NewRouter()
 
-	authenticatedRouter := NewRouter()
-	authenticatedRouter.GET("/images/new", HandleImageNew)
+	router.Handle("GET", "/", HandleHome)
 
+	router.ServeFiles("/assets/*filepath", http.Dir("assets/"))
+
+	// unauthenticatedRouter := NewRouter()
+	// unauthenticatedRouter.GET("/", HandleHome)
+	//
+	// authenticatedRouter := NewRouter()
+	// authenticatedRouter.GET("/images/new", HandleImageNew)
+	//
 	middleware := Middleware{}
-	middleware.Add(unauthenticatedRouter)
-	middleware.Add(http.HandlerFunc(AuthenticateRequest))
-	middleware.Add(authenticatedRouter)
-
-	http.ListenAndServe(":3000", middleware)
+	middleware.Add(router)
+	// middleware.Add(unauthenticatedRouter)
+	// middleware.Add(http.HandlerFunc(AuthenticateRequest))
+	// middleware.Add(authenticatedRouter)
+	//
+	log.Fatal(http.ListenAndServe(":3000", middleware))
 }
 
 // NotFound ...
